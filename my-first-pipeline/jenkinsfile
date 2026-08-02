@@ -1,12 +1,33 @@
 pipeline {
-  agent {
-    docker { image 'node:16-alpine' }
-  }
-  stages {
-    stage('Test') {
-      steps {
-        sh 'node --version'
-      }
+    agent any   // Jenkins built-in node पर run होगा
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // GitHub से code pull
+                git branch: 'main', url: 'https://github.com/<your-username>/<your-repo>.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Example: Maven build
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Example: Run unit tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Example: Deployment step (dummy)
+                echo 'Deploying application...'
+            }
+        }
     }
-  }
 }
